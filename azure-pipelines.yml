@@ -111,25 +111,4 @@ stages:
               appName: '$(WebAppNameTest)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
 
-- stage: 'Staging'
-  displayName: 'Deploy to the staging environment'
-  dependsOn: Test
-  jobs:
-  - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-18.04'
-    environment: staging
-    variables:
-    - group: 'Release'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: drop
-          - task: AzureWebApp@1
-            displayName: 'Azure App Service Deploy: website'
-            inputs:
-              azureSubscription: 'Resource Manager - Tailspin - Space Game'
-              appName: '$(WebAppNameStaging)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+ステージ: 'ステージング' 表示名: 'ステージング環境に展開' 依存: テストジョブ: -展開:  プールを展開: vmImage: 'ubuntu-18.04' 環境: ステージング変数: -グループ: 'リリース' 戦略: runOnce: 展開:ステップ- ダウンロード:現在のアーティファクト: ドロップ-タスク: AzureWebApp@1表示名: 'Azure アプリ サービスデプロイ: Web サイト' 入力: azureSubscription: 'リソース マネージャー - テールスピン - スペース ゲーム' デプロイToSlotOrASE: 'true' リソースグループ名: 'テールスピンスペース- ゲーム rg' スロット名: 'スワップ' アプリ名: '$(WebAppNameStaging)' パッケージ: '$(パイプライン.ワークスペース)/ドロップ/$(ビルド構成)/*.zip' -タスク: AzureAppServiceManage@0表示名: 'スワップデプロイスロット' 入力: azureサブスクリプション: 'リソースマネージャー - テールスピン - スペースゲーム' リソースグループ名: 'テールスピンスペースゲーム-rg' webAppName: '$(WebAppNameStaging)' ソーススロット: 'スワップ' ターゲットスロット: '生産' アクション: 'スワップスロット'
